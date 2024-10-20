@@ -1,37 +1,48 @@
 "use client";
+
 import React, { useState, FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { IoSearchOutline } from "react-icons/io5";
-
+import { BsChevronDown } from "react-icons/bs";
+import { NavigationItem } from "@/utils/interface";
 import { navigation } from "@/contans/navigation";
-
-interface NavigationItem {
-  label: string;
-  link: string;
-}
+import AccountMenu from "./AccountMenu";
 
 const Header: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState<string>("");
+  const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false);
 
-  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSearchSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmedInput = searchInput.trim();
     if (trimmedInput) {
-      router.push(`search?q=${trimmedInput}`);
+      try {
+        await router.replace(`/search?q=${trimmedInput}`);
+      } catch (error) {
+        console.error("Error during navigation:", error);
+      }
     }
   };
 
+  const toggleAccountMenu = () => {
+    setShowAccountMenu((prev) => !prev);
+  };
+
   return (
-    <header className="fixed top-0 w-full h-16 bg-neutral-600 bg-opacity-75 z-40">
+    <header className="fixed top-0 w-full h-16 bg-black bg-opacity-50 z-40">
       <div className="container mx-auto px-3 flex items-center h-full">
         <Link href={"/"}>
-          <h1 className="font-bold text-2xl text-[#01FF00] cursor-pointer">
-            EnterKomputer Movie
-          </h1>
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={605}
+            height={605}
+            className="w-[250px]"
+          />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-4 ml-5">
@@ -67,14 +78,26 @@ const Header: React.FC = () => {
             </button>
           </form>
 
-          <div>
-            <Image
-              src="/avatar.png"
-              alt="User avatar"
-              width={500}
-              height={500}
-              className="w-10 h-10 rounded-full overflow-hidden cursor-pointer active:scale-75 transition-all"
-            />
+          <div className="relative">
+            <div
+              onClick={toggleAccountMenu}
+              className="flex items-center cursor-pointer"
+            >
+              <Image
+                src="/default-green.png"
+                alt="User avatar"
+                width={500}
+                height={500}
+                className="w-10 h-10 rounded overflow-hidden"
+              />
+
+              <BsChevronDown
+                className={`ml-2 w-4 h-4 text-neutral-300 ${
+                  showAccountMenu ? "rotate-180" : ""
+                }`}
+              />
+            </div>
+            <AccountMenu visible={showAccountMenu} />
           </div>
         </div>
       </div>

@@ -1,16 +1,11 @@
 import { IoSearchOutline } from "react-icons/io5";
-import { MdHomeFilled, MdFavoriteBorder, MdMovie } from "react-icons/md";
+import { MdHomeFilled, MdMovie } from "react-icons/md";
 import { PiTelevisionFill } from "react-icons/pi";
-
-interface NavigationItem {
-  label: string;
-  link: string;
-  icon: JSX.Element;
-}
+import { NavigationItem } from "@/utils/interface";
 
 export const navigation: NavigationItem[] = [
   {
-    label: "Tv Shows",
+    label: "TV Shows",
     link: "/tv",
     icon: <PiTelevisionFill />,
   },
@@ -18,11 +13,6 @@ export const navigation: NavigationItem[] = [
     label: "Movies",
     link: "/movie",
     icon: <MdMovie />,
-  },
-  {
-    label: "Favorite",
-    link: "/favorite",
-    icon: <MdFavoriteBorder />,
   },
 ];
 

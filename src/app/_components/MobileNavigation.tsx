@@ -1,20 +1,19 @@
 "use client";
 import React from "react";
-import { mobileNavigation } from "@/contans/navigation";
 import Link from "next/link";
+import { mobileNavigation } from "@/contans/navigation";
 import { usePathname } from "next/navigation";
-
-interface MobileNavItem {
-  label: string;
-  link: string;
-  icon: JSX.Element;
-}
+import { MobileNavItem } from "@/utils/interface";
 
 const MobileNavigation: React.FC = () => {
   const pathname = usePathname();
 
+  const isAuthPage = pathname === "/sign-up" || pathname === "/sign-in";
+
+  if (isAuthPage) return null;
+
   return (
-    <nav className="lg:hidden h-14 bg-neutral-600 bg-opacity-40 fixed bottom-0 w-full">
+    <nav className="lg:hidden h-14 bg-black bg-opacity-70 backdrop-blur-2xl fixed bottom-0 w-full z-40">
       <div className="flex items-center justify-between h-full w-full text-neutral-400">
         {mobileNavigation.map((nav: MobileNavItem) => (
           <div
